@@ -1,0 +1,33 @@
+{
+  "name": "serverfact",
+  "version": "1.0.0",
+  "description": "server nodejs with typescript",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
+  },
+  "keywords": [],
+  "author": "Juan Pablo Sigcho",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "16.1.8",
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "mongodb": "^3.3.5"
+  },
+  "devDependencies": {
+    "@types/chai": "4.2.5",
+    "@types/mongodb": "3.3.11",
+    "@types/node": "12.12.11",
+    "@types/sinon-chai": "^3.2.3",
+    "nodemon": "2.0.1",
+    "sinon": "^8.1.1",
+    "sinon-chai": "3.4.0",
+    "ts-node": "8.5.2",
+    "typescript": "3.7.2"
+  }  
+}

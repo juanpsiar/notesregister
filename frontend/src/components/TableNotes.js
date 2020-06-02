@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDataGrid from "react-data-grid";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
-
+import Services from '../services/student.services';
   
 const {    
     SingleSelectFilter
@@ -20,11 +20,11 @@ const rows = [
     { student: "Mauricio", homework: 9, test: 4, average: '' },
     { student: "Pamela", homework: 9, test: 4, average: '' },
     { student: "José", homework: 9, test: 8, average: '' },
-    { student: "Jairo", homework: 9, test: 4, average: '' },
+    { student: "Jairo", homework: 8, test: 6, average: '' },
     { student: "David", homework: 9, test: 4, average: '' },
-    { student: "Cristina", homework: 9, test: 4, average: '' },
+    { student: "Cristina", homework: 9, test: 9, average: '' },
     { student: "Daniel", homework: 9, test: 4, average: '' },
-    { student: "María", homework: 9, test: 4, average: '' },    
+    { student: "María", homework: 8, test: 6, average: '' },    
 ];
 
 const TableNotes = () => {
@@ -70,6 +70,7 @@ const TableNotes = () => {
         const tableData = rowsData.map((data)=>{
             
             return {
+                _id: data._id,
                 student: data.student,
                 homework: data.homework, 
                 test: data.test, 
@@ -83,12 +84,16 @@ const TableNotes = () => {
     const [gridState, setGridState] = useState(buildTable(rows));
     const filteredRows = getRows(gridState, filters);
 
+    const getDataServer = () => {
+        Services.getStudent().then((data)=> {
+            setGridState(buildTable(data.data)); 
+        });
+    };
 
-    
     useEffect(() => {
-        console.log('gridstate changes:', gridState)
-    
-    }, [gridState]);
+        getDataServer();        
+        console.log('gridstate changes:', gridState);    
+    }, []);
 
     const checkValue = (valueCell) => {
         let flag = false; 
