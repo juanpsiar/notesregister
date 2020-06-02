@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDataGrid from "react-data-grid";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Services from '../services/student.services';
+import StudentServices from "../services/student.services";
   
 const {    
     SingleSelectFilter
@@ -12,19 +13,6 @@ const columns = [
     { key: "homework", name: "Deberes", editable: true },  
     { key: "test", name: "Examen", editable: true },  
     { key: "average", name: "Promedio", filterRenderer: SingleSelectFilter, filterable: true, sortable: true, sortDescendingFirst: true },  
-];
-  
-const rows = [
-    { student: "Juan", homework: 8, test: 6, average: '' },
-    { student: "Pedro", homework: 5, test: 9, average: '' },
-    { student: "Mauricio", homework: 9, test: 4, average: '' },
-    { student: "Pamela", homework: 9, test: 4, average: '' },
-    { student: "José", homework: 9, test: 8, average: '' },
-    { student: "Jairo", homework: 8, test: 6, average: '' },
-    { student: "David", homework: 9, test: 4, average: '' },
-    { student: "Cristina", homework: 9, test: 9, average: '' },
-    { student: "Daniel", homework: 9, test: 4, average: '' },
-    { student: "María", homework: 8, test: 6, average: '' },    
 ];
 
 const TableNotes = () => {
@@ -37,8 +25,7 @@ const TableNotes = () => {
             newFilters[filter.column.key] = filter;
         } else {
             delete newFilters[filter.column.key];
-        }
-        
+        }      
 
         return newFilters;
     };
@@ -81,7 +68,7 @@ const TableNotes = () => {
         return tableData;         
     };
 
-    const [gridState, setGridState] = useState(buildTable(rows));
+    const [gridState, setGridState] = useState();
     const filteredRows = getRows(gridState, filters);
 
     const getDataServer = () => {
@@ -91,14 +78,11 @@ const TableNotes = () => {
     };
 
     useEffect(() => {
-        getDataServer();        
-        console.log('gridstate changes:', gridState);    
+        getDataServer();                
     }, []);
 
     const checkValue = (valueCell) => {
-        let flag = false; 
-        console.log('valueCell>>',valueCell);
-        debugger
+        let flag = false;     
         if(isNaN(valueCell) && 
         (parseFloat(valueCell[Object.keys(valueCell)]) >=0 && parseFloat(valueCell[Object.keys(valueCell)])<=10)){
             flag = true; 
@@ -112,9 +96,12 @@ const TableNotes = () => {
             alert('El rango de valores permitidos es de 0 a 10');
         }else {
             for (let i = fromRow; i <= toRow; i++) {
-            rowsUpdated[i] = { ...rowsUpdated[i], ...updated };          
-            }                          
-            setGridState(buildTable(rowsUpdated));      
+                rowsUpdated[i] = { ...rowsUpdated[i], ...updated };          
+            }                   
+                    
+            const dataNew = StudentServices.updateNote(rowsUpdated[fromRow]["_id"], updated);
+            console.log('inserted data', dataNew);
+            setGridState(buildTable(rowsUpdated));
         }
     };
     

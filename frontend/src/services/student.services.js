@@ -1,22 +1,19 @@
 import { client } from './api'
+import { node } from 'prop-types';
 
 class StudentServices {
   
   static async getStudent () {
-    const result = await client.get('/student');
-    console.log('result frontend', result);
+    const result = await client.get('/student');    
     return result
   }
 
-  static async updatePerson(id, person) {
-    const result = await client.put(`/people/ids/${id}`, person)
+  static async updateNote(id, note) {    
+    const result = await client.put(`/student/id/${id}`, note)
     return result
   }
 
-  static async deletePerson (id) {
-    const result = await client.delete(`people/ids/${id}`)
-    return result
-  }
+  
 }
 
 export default StudentServices
